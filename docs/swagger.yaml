@@ -1,0 +1,199 @@
+definitions:
+  models.Note:
+    properties:
+      content:
+        description: contenido de la nota
+        type: string
+      id:
+        description: identificador único
+        type: integer
+      title:
+        description: título de la nota
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /notes:
+    get:
+      description: Devuelve una lista de todas las notas almacenadas
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Note'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Obtiene todas las notas
+      tags:
+      - notas
+    post:
+      consumes:
+      - application/json
+      description: Crea una nueva nota con título y contenido
+      parameters:
+      - description: Nota a crear
+        in: body
+        name: note
+        required: true
+        schema:
+          $ref: '#/definitions/models.Note'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Note'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Crea una nueva nota
+      tags:
+      - notas
+  /notes/{id}:
+    delete:
+      description: Elimina una nota según su ID
+      parameters:
+      - description: ID de la nota
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Elimina una nota
+      tags:
+      - notas
+    get:
+      description: Devuelve una nota específica según su ID
+      parameters:
+      - description: ID de la nota
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Note'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Obtiene una nota por ID
+      tags:
+      - notas
+    patch:
+      consumes:
+      - application/json
+      description: Modifica solo los campos enviados de la nota
+      parameters:
+      - description: ID de la nota
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Campos a actualizar
+        in: body
+        name: note
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Note'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Actualiza parcialmente una nota
+      tags:
+      - notas
+    put:
+      consumes:
+      - application/json
+      description: Reemplaza todos los campos de una nota según el ID
+      parameters:
+      - description: ID de la nota
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Nota con los datos actualizados
+        in: body
+        name: note
+        required: true
+        schema:
+          $ref: '#/definitions/models.Note'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Note'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Actualiza completamente una nota
+      tags:
+      - notas
+swagger: "2.0"
