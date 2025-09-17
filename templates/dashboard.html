@@ -1,0 +1,19 @@
+{{ define "content" }}
+
+<h1>NotasGo</h1>
+
+{{if .Error}}
+    <p class="error">{{.Error}}</p>
+{{end}}
+
+<h2>Crear nueva nota</h2>
+<form action="/notes/create" method="POST">
+    <input type="text" name="title" placeholder="Título" required>
+    <textarea name="content" placeholder="Contenido" required></textarea>
+    <button type="submit" class="create">Crear</button>
+</form>
+
+<h2>Notas existentes</h2>
+{{ template "notes" . }}
+
+{{ end }}

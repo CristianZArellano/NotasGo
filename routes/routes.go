@@ -10,9 +10,10 @@ import (
 
 func SetupRouter() *gin.Engine {
 	r := gin.Default() // Inicializa Gin con logger y recovery
+	r.LoadHTMLGlob("templates/*")
 
 	// Ruta de inicio
-	r.GET("/", controllers.Home)
+	r.GET("/", controllers.Dashboard)
 
 	// Rutas de notas
 	r.GET("/notes", controllers.GetNotes)          // Obtener todas las notas
@@ -21,6 +22,11 @@ func SetupRouter() *gin.Engine {
 	r.PUT("/notes/:id", controllers.UpdateNote)    // Actualizar una nota completa (PUT)
 	r.PATCH("/notes/:id", controllers.PatchNote)   // Actualizar parcialmente (PATCH)
 	r.DELETE("/notes/:id", controllers.DeleteNote) // Eliminar una nota
+
+	// Formularios HTML
+	r.POST("/notes/create", controllers.CreateNoteForm)
+	r.POST("/notes/delete", controllers.DeleteNoteForm)
+	r.POST("/notes/update", controllers.UpdateNoteForm)
 
 	// Ruta de Swagger UI
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

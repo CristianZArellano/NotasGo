@@ -1,0 +1,26 @@
+{{ define "notes" }}
+<ul>
+    {{range .Notes}}
+    <li class="note">
+        <div class="note-header">
+            <span class="note-title">{{.Title}}</span>
+            <div class="note-actions">
+                <form action="/notes/update" method="POST">
+                    <input type="hidden" name="id" value="{{.ID}}">
+                    <input type="text" name="title" value="{{.Title}}" required>
+                    <input type="text" name="content" value="{{.Content}}" required>
+                    <button type="submit" class="update">Actualizar</button>
+                </form>
+                <form action="/notes/delete" method="POST">
+                    <input type="hidden" name="id" value="{{.ID}}">
+                    <button type="submit" class="delete">Eliminar</button>
+                </form>
+            </div>
+        </div>
+        <div class="note-content">{{.Content}}</div>
+    </li>
+    {{else}}
+        <li>No hay notas aún</li>
+    {{end}}
+</ul>
+{{ end }}

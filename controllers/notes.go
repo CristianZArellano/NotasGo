@@ -155,7 +155,36 @@ func DeleteNote(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Nota eliminada"})
 }
 
-// Home maneja GET /
-func Home(c *gin.Context) {
-	c.JSON(http.StatusOK, models.Mensaje{Message: "Bienvenido a la API de Notas"})
+func CreateNoteForm(c *gin.Context) {
+	title := c.PostForm("title")
+	content := c.PostForm("content")
+
+	note := models.Note{Title: title, Content: content}
+	database.DB.Create(&note)
+
+	c.Redirect(http.StatusSeeOther, "/")
+}
+
+func UpdateNoteForm(c *gin.Context) {
+	id := c.PostForm("id")
+	title := c.PostForm("title")
+	content := c.PostForm("content")
+
+	var note models.Note
+	if err := database.DB.First(&note, id).Error; err != nil {
+		c.HTML(http.StatusNotFound, "index.html", gin.H{"Error": "Nota no encontrada"})
+		return
+	}
+
+	note.Title = title
+	note.Content = content
+	database.DB.Save(&note)
+
+	c.Redirect(http.StatusSeeOther, "/")
+}
+
+func DeleteNoteForm(c *gin.Context) {
+	id := c.PostForm("id")
+	database.DB.Delete(&models.Note{}, id)
+	c.Redirect(http.StatusSeeOther, "/")
 }
